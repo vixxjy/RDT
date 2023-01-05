@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class HomeController {
 
-    @GetMapping("/users")
-    public ResponseEntity<String> getUsers() {
+    @GetMapping("/home")
+    public ResponseEntity<String> home() {
         return ResponseEntity.ok("Happy coding...");
     }
 }
