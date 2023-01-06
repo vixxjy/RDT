@@ -6,19 +6,25 @@ import com.example.demo.dao.UserDao;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserDao userDao;
@@ -40,5 +46,17 @@ public class AuthController {
         }
 
         return ResponseEntity.ok("Some error has occurred");
+    }
+
+    @GetMapping("/read-json")
+    public ResponseEntity<Map<String, Object>> getJsonStates() throws Exception{
+        ClassPathResource jsonData = new ClassPathResource("states.json");
+        String jsonDataString = IOUtils.toString(jsonData.getInputStream(), StandardCharsets.UTF_8);
+
+        JSONObject statesArray = new JSONObject(jsonDataString);
+
+        System.out.println("json states" + statesArray.toMap());
+
+        return new ResponseEntity<>(new JSONObject(jsonDataString).toMap(), HttpStatus.OK);
     }
 }
