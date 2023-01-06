@@ -24,7 +24,7 @@ public class RDT {
     private String age;
     private String sex;
     private String patientType;
-    private LocalDate symptomOnset;
+    private String symptomOnset;
     private LocalDate lastContact;
     private LocalDateTime sampleCollection;
     private String sampleCollectedType;

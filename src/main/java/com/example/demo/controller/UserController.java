@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.xml.ws.Response;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
         User newUser = userService.createUser(user);
         return ResponseEntity.ok(newUser);
     }
@@ -33,14 +34,14 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable ("id") long userId) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @PathVariable ("id") long userId) {
         User updatedUser = userService.updateUser(userId, user);
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable ("id") long userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable ("id") long userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("User with " + userId + " is deleted successfully");
     }
 }
